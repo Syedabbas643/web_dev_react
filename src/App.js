@@ -1,4 +1,4 @@
-import {useState,useEffect} from 'react';
+import {useState} from 'react';
 
 function App() {
 
@@ -10,15 +10,6 @@ function App() {
   ,{id:5,item:""}])
 
   const [task,settask] = useState("");
-  
-  const [message, setMessage] = useState('');
-
-  useEffect(() => {
-    fetch('/api/test')
-    .then((response) => response.json())
-    .then((data) => setMessage(data.message))
-    .catch((error) => console.error('Error fetching data:', error));
-  }, []);
 
   const handleChange = (event) => {
     settask(event.target.value);
@@ -30,7 +21,7 @@ function App() {
     const tempItems = items.map((x) => {
       if (!added && x.item.length < 1) {
         added = true; 
-        return { ...x, item: message }; 
+        return { ...x, item: task }; 
       }
       return x; 
     });

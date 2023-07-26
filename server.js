@@ -1,16 +1,65 @@
-const express = require('express');
-const app = express();
-const PORT = 5000; // Choose any available port number
+const express = require("express")
+//const collection = require("./mongo")
+const fs = require("fs");
+const cors = require("cors")
+const app = express()
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(cors())
 
-// Middleware to parse JSON data in requests
-app.use(express.json());
+const USERS_FILE_PATH = "./users.json";
+function readUsersFile() {
+    try {
+      const data = fs.readFileSync(USERS_FILE_PATH, "utf8");
+      return JSON.parse(data);
+    } catch (error) {
+      return [];
+    }
+  }
+  
+  function writeUsersFile(users) {
+    fs.writeFileSync(USERS_FILE_PATH, JSON.stringify(users, null, 2), "utf8");
+  }
 
-// Sample route to test the server
-app.get('/api/test', (req, res) => {
-  res.json({ message: 'Server is up and running!' });
-});
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
-});
+app.get("/",cors(),(req,res)=>{
+    res.send("Use Main URL")
+
+})
+
+app.post("/login", (req, res) => {
+    const { tel, code } = req.body;
+    const users = readUsersFile();
+    const user = users.find((user) => user.Passcode === code);
+  
+    if (!user) {
+      res.json("notexist");
+      return;
+    }
+  
+    if (user.Passcode === code) {
+      res.json("success");
+    } else {
+      res.json("fail");
+    }
+  });
+
+app.post("/signup", (req, res) => {
+    const { tel, code } = req.body;
+    const users = readUsersFile();
+    const user = users.find((user) => user.Passcode === code);
+  
+    if (user) {
+      res.json("exist");
+      return;
+    }
+  
+    users.push({ Number:tel,Passcode:code });
+    writeUsersFile(users);
+  
+    res.json("success");
+  });
+
+app.listen(8000,()=>{
+    console.log("port connected");
+})
