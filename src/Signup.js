@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import axios from "axios"
 import { useNavigate, Link } from "react-router-dom"
 
-const Signup = () => {
+const Signup = ({ setIsLoggedIn }) => {
   const history=useNavigate();
 
     const [tel,settel]=useState('')
@@ -25,7 +25,8 @@ const Signup = () => {
                     alert("User already exists")
                 }
                 else if(res.data==="success"){
-                    history("/web_dev_react/app",{state:{id:tel}})
+                  setIsLoggedIn(true);
+                  history("/web_dev_react/app",{state:{id:tel}})
                 }
             })
             .catch(e=>{

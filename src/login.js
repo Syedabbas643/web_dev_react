@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import axios from "axios"
 import { useNavigate, Link } from "react-router-dom"
 
-const Login = () => {
+const Login = ({ setIsLoggedIn }) => {
     const history=useNavigate();
 
     const [tel,settel]=useState('')
@@ -22,6 +22,7 @@ const Login = () => {
             })
             .then(res=>{
                 if(res.data==="success"){
+                    setIsLoggedIn(true);
                     history("/web_dev_react/app",{state:{id:tel}})
                 }
                 else if(res.data==="fail"){
