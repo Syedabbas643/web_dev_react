@@ -17,13 +17,13 @@ const Login = ({ setIsLoggedIn }) => {
 
         try{
 
-            await axios.post("http://localhost:8000/login",{
+            await axios.post("https://gamerserver-3e5z.onrender.com/login",{
                 tel,code
             })
             .then(res=>{
                 if(res.data==="success"){
                     setIsLoggedIn(true);
-                    history("/web_dev_react/app",{state:{id:tel}})
+                    history("/web_dev_react/Calender",{state:{id:code}})
                 }
                 else if(res.data==="fail"){
                     alert("Passcode is WRONG")
@@ -52,8 +52,16 @@ const Login = ({ setIsLoggedIn }) => {
             <h1>Login</h1>
 
             <form action="POST">
-                <input type="tel" onChange={(e) => { settel(e.target.value) }} placeholder="Enter Your Phone number"  />
-                <input type="tel" onChange={(e) => { setcode(e.target.value) }} placeholder="Enter Your Code here"  />
+                <input type="tel" onChange={(e) => { settel(e.target.value) }} onKeyPress={(e) => {
+                      if (!/[0-9]/.test(e.key)) {
+                          e.preventDefault();
+                      }
+                  }} placeholder="Enter Your Phone number"  />
+                <input type="tel" onChange={(e) => { setcode(e.target.value) }} onKeyPress={(e) => {
+                      if (!/[0-9]/.test(e.key)) {
+                          e.preventDefault();
+                      }
+                  }} placeholder="Enter Your Code here"  />
                 <input type="submit" onClick={submit} />
 
             </form>

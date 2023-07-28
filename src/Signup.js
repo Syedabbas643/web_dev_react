@@ -7,18 +7,19 @@ const Signup = ({ setIsLoggedIn }) => {
 
     const [tel,settel]=useState('')
     const [code,setcode]=useState('')
+    const [name,setname]=useState('')
 
     async function submit(e){
         e.preventDefault();
-        if (tel.trim() === '' || code.trim() === '') {
+        if (tel.trim() === '' || code.trim() === ''|| name.trim() === '') {
           alert('Please fill in all the required fields.');
           return;
         }
 
         try{
 
-            await axios.post("http://localhost:8000/signup",{
-                tel,code
+            await axios.post("https://gamerserver-3e5z.onrender.com/signup",{
+                tel,code,name
             })
             .then(res=>{
                 if(res.data==="exist"){
@@ -26,7 +27,7 @@ const Signup = ({ setIsLoggedIn }) => {
                 }
                 else if(res.data==="success"){
                   setIsLoggedIn(true);
-                  history("/web_dev_react/app",{state:{id:tel}})
+                  history("/web_dev_react/app",{state:{id:code}})
                 }
             })
             .catch(e=>{
@@ -48,6 +49,13 @@ const Signup = ({ setIsLoggedIn }) => {
 
           <form action="POST">
                 <input
+                    type="text"
+                    onChange={(e) => { setname(e.target.value) }}
+                    placeholder="Enter Your Name"
+                    required
+                />
+                <br></br>
+                <input
                     type="tel"
                     pattern="[0-9]*"
                     onChange={(e) => { settel(e.target.value) }}
@@ -59,6 +67,7 @@ const Signup = ({ setIsLoggedIn }) => {
                     placeholder="Enter Your Phone number"
                     required
                 />
+                <br></br>
                 <input
                     type="tel"
                     pattern="[0-9]*"
@@ -71,6 +80,7 @@ const Signup = ({ setIsLoggedIn }) => {
                     placeholder="Enter Your Code here"
                     required
                 />
+                <br></br>
                 <input type="submit" onClick={submit} />
           </form>
 
