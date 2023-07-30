@@ -18,7 +18,7 @@ const Signup = ({ setIsLoggedIn }) => {
 
         try{
 
-            await axios.post("https://gamerserver-3e5z.onrender.com/signup",{
+            await axios.post("https://colorful-pink-girdle.cyclic.app/signup",{
                 tel,code,name
             })
             .then(res=>{

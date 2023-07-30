@@ -26,7 +26,7 @@ function App() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get("https://gamerserver-3e5z.onrender.com/get", {
+        const response = await axios.get("https://colorful-pink-girdle.cyclic.app/get", {
           params: {
             code, // Passcode as a query parameter
           },
@@ -67,7 +67,7 @@ function App() {
   async function savetask(){
     try{
 
-        await axios.post("https://gamerserver-3e5z.onrender.com/savetask",{
+        await axios.post("https://colorful-pink-girdle.cyclic.app/savetask",{
             items,code
         })
         .then(res=>{

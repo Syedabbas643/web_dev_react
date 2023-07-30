@@ -33,7 +33,7 @@ const Calendar = ({ currentDate }) => {
     useEffect(() => {
         async function fetchData() {
           try {
-            const response = await axios.get("https://gamerserver-3e5z.onrender.com/get", {
+            const response = await axios.get("https://colorful-pink-girdle.cyclic.app/get", {
               params: {
                 code, // Passcode as a query parameter
               },
@@ -94,7 +94,7 @@ const Calendar = ({ currentDate }) => {
     const handlePopupSubmit = async (date, inputValue) => {
         try {
           // Send the data to the server using axios POST request
-          const response = await axios.post("https://gamerserver-3e5z.onrender.com/savedate", {
+          const response = await axios.post("https://colorful-pink-girdle.cyclic.app/savedate", {
             date,
             inputValue,
             code,
