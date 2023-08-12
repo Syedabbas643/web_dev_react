@@ -1,29 +1,27 @@
 import React, { useState } from "react"
 import axios from "axios"
-import { useNavigate, Link } from "react-router-dom"
+import { useNavigate} from "react-router-dom"
+import Signup from './Signup';
 
-const Login = ({ setIsLoggedIn }) => {
+const Login = () => {
     const history=useNavigate();
-
-    const [tel,settel]=useState('')
     const [code,setcode]=useState('')
 
     async function submit(e){
         e.preventDefault();
-        if (tel.trim() === '' || code.trim() === '') {
+        if (code.trim() === '') {
             alert('Please fill in all the required fields.');
             return;
           }
 
         try{
 
-            await axios.post("https://colorful-pink-girdle.cyclic.app/login",{
-                tel,code
+            await axios.post("/login123",{
+                code
             })
             .then(res=>{
                 if(res.data==="success"){
-                    setIsLoggedIn(true);
-                    history("/web_dev_react/Calender",{state:{id:code}})
+                    history("/Calender",{state:{id:code}})
                 }
                 else if(res.data==="fail"){
                     alert("Passcode is WRONG")
@@ -52,11 +50,6 @@ const Login = ({ setIsLoggedIn }) => {
             <h1>Login</h1>
 
             <form action="POST">
-                <input type="tel" onChange={(e) => { settel(e.target.value) }} onKeyPress={(e) => {
-                      if (!/[0-9]/.test(e.key)) {
-                          e.preventDefault();
-                      }
-                  }} placeholder="Enter Your Phone number"  />
                 <input type="tel" onChange={(e) => { setcode(e.target.value) }} onKeyPress={(e) => {
                       if (!/[0-9]/.test(e.key)) {
                           e.preventDefault();
@@ -69,10 +62,9 @@ const Login = ({ setIsLoggedIn }) => {
             <br />
             <p>OR</p>
             <br />
-
-            <Link to="/web_dev_react/signup">Signup Page</Link>
-
+            <Signup />
         </div>
+        
     )
 }
 

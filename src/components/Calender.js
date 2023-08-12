@@ -1,6 +1,5 @@
 import React,{ useState,useEffect } from "react";
 import { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, isSameMonth, isSameDay } from "date-fns";
-//import { Link } from "react-router-dom";
 import Popup from "./Popup";
 import axios from "axios"
 import "./Calender.css"
@@ -33,7 +32,7 @@ const Calendar = ({ currentDate }) => {
     useEffect(() => {
         async function fetchData() {
           try {
-            const response = await axios.get("https://colorful-pink-girdle.cyclic.app/get", {
+            const response = await axios.get("/get123", {
               params: {
                 code, // Passcode as a query parameter
               },
@@ -87,14 +86,12 @@ const Calendar = ({ currentDate }) => {
   
     const handleClosePopup = () => {
       setShowPopup(false);
-      //setSelectedDate(null);
-      //setSelectedColor("#ffffff");
+      
     };
   
     const handlePopupSubmit = async (date, inputValue) => {
         try {
-          // Send the data to the server using axios POST request
-          const response = await axios.post("https://colorful-pink-girdle.cyclic.app/savedate", {
+          const response = await axios.post("/savedate123", {
             date,
             inputValue,
             code,
@@ -117,8 +114,6 @@ const Calendar = ({ currentDate }) => {
 
     const getTotalWorkedHoursForCurrentMonth = () => {
         let totalHours = 0;
-    
-        // Loop through the items array
         items.forEach((item) => {
           // Convert the date string from the item to a Date object
           const itemDate = new Date(item.date);
@@ -126,7 +121,6 @@ const Calendar = ({ currentDate }) => {
           // Check if the item's date is within the current month
           if (isSameMonth(itemDate, monthStart) || isSameMonth(itemDate, monthEnd)) {
             // If the date is within the current month, add the worked hours to the total
-
             totalHours += parseInt(item.Hours, 10);
           }
         });

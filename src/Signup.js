@@ -1,8 +1,8 @@
 import React, { useState } from "react"
 import axios from "axios"
-import { useNavigate, Link } from "react-router-dom"
+import { useNavigate} from "react-router-dom"
 
-const Signup = ({ setIsLoggedIn }) => {
+const Signup = () => {
   const history=useNavigate();
 
     const [tel,settel]=useState('')
@@ -18,7 +18,7 @@ const Signup = ({ setIsLoggedIn }) => {
 
         try{
 
-            await axios.post("https://colorful-pink-girdle.cyclic.app/signup",{
+            await axios.post("/signup123",{
                 tel,code,name
             })
             .then(res=>{
@@ -26,8 +26,7 @@ const Signup = ({ setIsLoggedIn }) => {
                     alert("User already exists")
                 }
                 else if(res.data==="success"){
-                  setIsLoggedIn(true);
-                  history("/web_dev_react/app",{state:{id:code}})
+                  history("/Calender",{state:{id:code}})
                 }
             })
             .catch(e=>{
@@ -83,13 +82,6 @@ const Signup = ({ setIsLoggedIn }) => {
                 <br></br>
                 <input type="submit" onClick={submit} />
           </form>
-
-            <br />
-            <p>OR</p>
-            <br />
-
-            <Link to="/web_dev_react/">Login Page</Link>
-
         </div>
   )
 }
