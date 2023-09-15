@@ -1,26 +1,43 @@
 import React,{ useState,useEffect } from "react";
-import { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, isSameMonth, isSameDay } from "date-fns";
+import { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, isSameMonth, isSameDay, setMonth, parseISO } from "date-fns";
 import Popup from "./Popup";
 import axios from "axios"
 import "./Calender.css"
 import { useLocation} from "react-router-dom"
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
-const Calendar = ({ currentDate }) => {
+const Calendar = () => {
     const [showPopup, setShowPopup] = useState(false);
     const [selectedDate, setSelectedDate] = useState(null);
     const [userdata, setUserdata] = useState(null);
     const [items,setitems] = useState(null);
+    const [leave,setleave] = useState(null);
     const [loading, setLoading] = useState(true);
     const location = useLocation()
     const code = location.state.id;
   
-    const monthStart = startOfMonth(currentDate);
-    const monthEnd = endOfMonth(currentDate);
+    const [selectedMonth, setSelectedMonth] = useState(new Date()); // Initialize with the current month
+    const monthStart = startOfMonth(selectedMonth);
+    const monthEnd = endOfMonth(selectedMonth);
     const startDate = startOfWeek(monthStart);
     const endDate = endOfWeek(monthEnd);
     const dateFormat = "yyyy-MM-dd";
     const days = [];
     let day = startDate;
+    
   
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
@@ -44,7 +61,9 @@ const Calendar = ({ currentDate }) => {
               const tempjson = response.data
               setUserdata(tempjson);
               setitems(tempjson.dates)
-              console.log(tempjson.dates)
+              setleave(tempjson.leave)
+              console.log(tempjson)
+              
             }
           } catch (error) {
             alert("Cannot get");
@@ -55,7 +74,7 @@ const Calendar = ({ currentDate }) => {
         }
     
         fetchData();
-      }, [code]);
+      }, [code, selectedMonth]);
   
       const isDateInJsonArray = (dateToCheck) => {
         return items.some((item) => isSameDay(new Date(item.date), dateToCheck));
@@ -88,29 +107,114 @@ const Calendar = ({ currentDate }) => {
       setShowPopup(false);
       
     };
+
+    const handleMonthChange = (event) => {
+      const selectedMonthIndex = event.target.value;
+      const newSelectedMonth = setMonth(selectedMonth, selectedMonthIndex);
+      setSelectedMonth(newSelectedMonth);
+      //console.log(monthname)
+    };
   
-    const handlePopupSubmit = async (date, inputValue) => {
-        try {
-          const response = await axios.post("/savedate123", {
-            date,
-            inputValue,
-            code,
-          });
-      
-          if (response.data === "success") {
-            alert("Saved to database");
-            const newitem = {date : date,Hours : inputValue}
-            const updateditems = [...items,newitem]
-            setitems(updateditems)
-          } else if (response.data === "fail") {
-            alert("Cannot save to database: fail");
+    const handlePopupSubmit = async (date, inputValue, option) => {
+
+        if (option === "OT"){
+
+
+          try {
+            const response = await axios.post("/savedateOT", {
+              date,
+              inputValue,
+              code,
+            });
+        
+            if (response.data === "success") {
+              alert("Saved to database");
+  
+              if (inputValue > 0){
+              const existingItemIndex = items.findIndex((item) => item.date === date);
+  
+                if (existingItemIndex !== -1) {
+                  // Date exists, update the hours
+                  const updatedItems = [...items];
+                  updatedItems[existingItemIndex].Hours = inputValue;
+                  setitems(updatedItems);
+                } else {
+                // Date does not exist, add it as a new date
+                const newitem = { date: date, Hours: inputValue };
+                const updatedItems = [...items, newitem];
+                setitems(updatedItems);
+                }
+              }else if(inputValue === 0){
+                const existingItemIndex = items.findIndex((item) => item.date === date);
+  
+                if (existingItemIndex !== -1) {
+                  // Date exists, update the hours
+                  const updatedItems = [...items];
+                  updatedItems.splice(existingItemIndex,1)
+                  setitems(updatedItems);
+                } 
+              }
+  
+            } else if (response.data === "fail") {
+              alert("Cannot save to database: fail");
+            }
+          } catch (error) {
+            // Handle errors if any
+            console.log(error);
+            alert("Cannot save to database: error");
           }
-        } catch (error) {
-          // Handle errors if any
-          console.log(error);
-          alert("Cannot save to database: error");
+
+
+        }else if (option === "Leave"){
+
+          try {
+            const response = await axios.post("/savedateLeave", {
+              date,
+              inputValue,
+              code,
+            });
+        
+            if (response.data === "success") {
+              alert("Saved to database");
+  
+              if (inputValue > 0){
+              const existingItemIndex = leave.findIndex((item) => item.date === date);
+  
+                if (existingItemIndex !== -1) {
+                  // Date exists, update the hours
+                  const updatedItems = [...leave];
+                  updatedItems[existingItemIndex].Hours = inputValue;
+                  setleave(updatedItems);
+                } else {
+                // Date does not exist, add it as a new date
+                const newitem = { date: date, Hours: inputValue };
+                const updatedItems = [...leave, newitem];
+                setleave(updatedItems);
+                }
+              }else if(inputValue === 0){
+                const existingItemIndex = leave.findIndex((item) => item.date === date);
+  
+                if (existingItemIndex !== -1) {
+                  // Date exists, update the hours
+                  const updatedItems = [...leave];
+                  updatedItems.splice(existingItemIndex,1)
+                  setleave(updatedItems);
+                } 
+              }
+  
+            } else if (response.data === "fail") {
+              alert("Cannot save to database: fail");
+            }
+          } catch (error) {
+            // Handle errors if any
+            console.log(error);
+            alert("Cannot save to database: error");
+          }
         }
-      };
+        };
+
+
+        
 
     const getTotalWorkedHoursForCurrentMonth = () => {
         let totalHours = 0;
@@ -161,8 +265,18 @@ const Calendar = ({ currentDate }) => {
           <Popup date={format(selectedDate, dateFormat)} onClose={handleClosePopup} onSubmit={handlePopupSubmit} />
         )}
         <div className="headercl">
-          <span className="month-name">{format(currentDate, "MMMM yyyy")}</span>
-        </div>
+        <select
+          className="month-selector"
+          //value={format(selectedMonth, "MMMM yyyy")}
+          onChange={handleMonthChange}
+        >
+          {months.map((month, index) => (
+            <option key={index} value={index}>
+              {month}
+            </option>
+          ))}
+        </select>
+      </div>
         <table className="table">
           <thead>
             <tr>

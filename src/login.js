@@ -2,10 +2,13 @@ import React, { useState } from "react"
 import axios from "axios"
 import { useNavigate} from "react-router-dom"
 import Signup from './Signup';
+import Calendar from './components/Calender';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 const Login = () => {
     const history=useNavigate();
     const [code,setcode]=useState('')
+    const [currentDate] = useState(new Date());
 
     async function submit(e){
         e.preventDefault();
@@ -21,7 +24,7 @@ const Login = () => {
             })
             .then(res=>{
                 if(res.data==="success"){
-                    history("/Calender",{state:{id:code}})
+                    history("/Calender",{state:{id:code,date:currentDate}})
                 }
                 else if(res.data==="fail"){
                     alert("Passcode is WRONG")

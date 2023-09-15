@@ -2,19 +2,19 @@ import React, { useState } from "react";
 
 const Popup = ({ date, onClose, onSubmit }) => {
   const [inputValue, setInputValue] = useState("");
-  const [checked, setChecked] = useState(false);
+  const [checkedOption, setCheckedOption] = useState(null);
 
   const handleChange = (e) => {
     setInputValue(e.target.value); // Allow only numbers in the input
   };
 
-  const handleCheckboxChange = (e) => {
-    setChecked(e.target.checked);
+  const handleOptionChange = (option) => {
+    setCheckedOption(option);
   };
 
   const handleSubmit = () => {
-    if (checked && inputValue !== "") {
-      onSubmit(date,inputValue);
+    if (inputValue !== "") {
+      onSubmit(date,parseInt(inputValue,10),checkedOption);
     }
     onClose();
   };
@@ -28,10 +28,24 @@ const Popup = ({ date, onClose, onSubmit }) => {
                           e.preventDefault();
                       }
                   }} onChange={handleChange} />
-        <label>
-          <input type="checkbox" checked={checked} onChange={handleCheckboxChange} />
-          Check the box to submit data
-        </label>
+          <div className="checkboxes">
+          <label>
+            <input
+              type="checkbox"
+              checked={checkedOption === "OT"}
+              onChange={() => handleOptionChange("OT")}
+            />
+            OT
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={checkedOption === "Leave"}
+              onChange={() => handleOptionChange("Leave")}
+            />
+            Leave
+          </label>
+        </div>
         <button onClick={handleSubmit}>Submit</button>
         <button onClick={onClose}>Cancel</button>
       </div>

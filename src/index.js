@@ -14,7 +14,7 @@ const MainApp = () => {
       <Routes>
         <Route path="/app" element={<App />} />
         <Route path="/" element={<Login />} />
-        <Route path="/calender" element={<Calendar currentDate={currentDate}/>} />
+        <Route path="/calender" element={<Calendar/>} />
       </Routes>
     </Router>
   );
