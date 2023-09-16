@@ -195,7 +195,7 @@ async function run() {
 
     app.post("/signup123", async (req, res) => {
       // MongoDB operations inside the route handler
-      const { tel, code, name } = req.body;
+      const { tel, code, name, salary } = req.body;
       const usersCollection = client.db("dbgamer").collection("users");
       const user = await usersCollection.findOne({ Passcode: code });
 
@@ -204,7 +204,7 @@ async function run() {
         return;
       }
 
-      await usersCollection.insertOne({ Name:name, Number: tel, Passcode: code,dates :[],leave:[],permissions:[] ,items:[
+      await usersCollection.insertOne({ Name:name, Number: tel, Passcode: code, salary:salary ,dates :[],leave:[],permissions:[] ,items:[
         {id:1,item:""}
       ,{id:2,item:""}
       ,{id:3,item:""}

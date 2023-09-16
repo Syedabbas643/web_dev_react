@@ -8,6 +8,7 @@ const Signup = () => {
     const [tel,settel]=useState('')
     const [code,setcode]=useState('')
     const [name,setname]=useState('')
+    const [salary,setsalary] = useState(0);
 
     async function submit(e){
         e.preventDefault();
@@ -19,7 +20,7 @@ const Signup = () => {
         try{
 
             await axios.post("/signup123",{
-                tel,code,name
+                tel,code,name,salary
             })
             .then(res=>{
                 if(res.data==="exist"){
@@ -77,6 +78,19 @@ const Signup = () => {
                       }
                   }}
                     placeholder="Enter Your Code here"
+                    required
+                />
+                <br></br>
+                <input
+                    type="tel"
+                    pattern="[0-9]*"
+                    onChange={(e) => { setsalary(e.target.value) }}
+                    onKeyPress={(e) => {
+                      if (!/[0-9]/.test(e.key)) {
+                          e.preventDefault();
+                      }
+                  }}
+                    placeholder="Enter your salary (OPTIONAL)"
                     required
                 />
                 <br></br>

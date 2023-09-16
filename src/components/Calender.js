@@ -26,6 +26,7 @@ const Calendar = () => {
     const [items,setitems] = useState(null);
     const [leave,setleave] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [salary,setsalary] = useState(null);
     const location = useLocation()
     const code = location.state.id;
   
@@ -62,6 +63,7 @@ const Calendar = () => {
               setUserdata(tempjson);
               setitems(tempjson.dates)
               setleave(tempjson.leave)
+              setsalary(parseInt(tempjson.salary,10))
               console.log(tempjson)
               
             }
@@ -79,11 +81,16 @@ const Calendar = () => {
       const isDateInJsonArray = (dateToCheck) => {
         return items.some((item) => isSameDay(new Date(item.date), dateToCheck));
       };
+
+      const isDateInleaveArray = (dateToCheck) => {
+        return leave.some((item) => isSameDay(new Date(item.date), dateToCheck));
+      };
       
       const renderDay = (day) => {
         const isCurrentMonth = isSameMonth(day, monthStart);
         const isToday = isSameDay(day, new Date());
         const isInJsonArray = isDateInJsonArray(day);
+        const isinleavearray = isDateInleaveArray(day);
       
         const handleDayClick = () => {
           setSelectedDate(day);
@@ -98,7 +105,7 @@ const Calendar = () => {
             }`}
             onClick={handleDayClick}
           >
-            <span className="day-number">{format(day, "d")}</span>
+            <span className={`day-number ${isinleavearray ? "highlightedleave" : ""}`}>{format(day, "d")}</span>
           </div>
         );
       };
@@ -232,6 +239,44 @@ const Calendar = () => {
         return totalHours;
       };
 
+      const gettotalleavedays = () =>{
+          let totalHours = 0
+          let totaldays = 0
+          leave.forEach((item) =>{
+            const itemleave = new Date(item.date);
+            if (isSameMonth(itemleave, monthStart) || isSameMonth(itemleave, monthEnd)) {
+              // If the date is within the current month, add the worked hours to the total
+              totalHours += parseInt(item.Hours, 10);
+            }
+            totaldays = totalHours/8
+          })
+          return totaldays
+      };
+
+      const otsalary = () =>{
+        let days = format(monthEnd, "dd")
+        let onehoursalary = salary / days / 8;
+        let totalothours = (parseInt(getTotalWorkedHoursForCurrentMonth(),10) / 2) + parseInt(getTotalWorkedHoursForCurrentMonth(),10)
+        let otsalary = onehoursalary * totalothours
+        return Math.ceil(otsalary)
+      }
+
+      const getsalary = () =>{
+        let totalHours = 0
+        leave.forEach((item) =>{
+          const itemleave = new Date(item.date);
+            if (isSameMonth(itemleave, monthStart) || isSameMonth(itemleave, monthEnd)) {
+              // If the date is within the current month, add the worked hours to the total
+              totalHours += parseInt(item.Hours, 10);
+            }
+          })
+        let days = format(monthEnd, "dd")
+        let onehoursalary = salary / days / 8;
+        let debitsalary = totalHours * onehoursalary
+        let totalsalary = salary + otsalary() - debitsalary
+        return Math.ceil(totalsalary)
+      }
+
 
   
     const renderWeek = (startDay) => {
@@ -260,14 +305,18 @@ const Calendar = () => {
   
     return (
       <div className="calendar">
-            <header className="clheader">TO DO List By {userdata.Name}</header>
+            <header className="clheader">Welcome Back, &gt; {userdata.Name.toUpperCase()} &lt;</header>
         {showPopup && (
           <Popup date={format(selectedDate, dateFormat)} onClose={handleClosePopup} onSubmit={handlePopupSubmit} />
         )}
         <div className="headercl">
+          <div>
+        <span className="month-name">{format(selectedMonth, "MMMM yyyy")}</span>
+        </div>
+        <div>
         <select
           className="month-selector"
-          //value={format(selectedMonth, "MMMM yyyy")}
+          //value={format(selectedMonth, "MMMM")}
           onChange={handleMonthChange}
         >
           {months.map((month, index) => (
@@ -275,7 +324,7 @@ const Calendar = () => {
               {month}
             </option>
           ))}
-        </select>
+        </select></div>
       </div>
         <table className="table">
           <thead>
@@ -289,8 +338,22 @@ const Calendar = () => {
           </thead>
           <tbody>{renderCalendar()}</tbody>
         </table>
-        <h3>Total OT hours in this month</h3><h3 className="hoursdisplay">{getTotalWorkedHoursForCurrentMonth()}</h3><br></br>
-        <h3>Total Leave days in this month</h3><h3 className="leavedisplay">Hours</h3><br></br>
+        <div className="detailsdisplay">
+          <div>
+          <h3>Total OT hours</h3><h3 className="hoursdisplay">{getTotalWorkedHoursForCurrentMonth()} Hours</h3>
+          </div>
+          <div>
+          <h3>Total Leave days</h3><h3 className="leavedisplay">{gettotalleavedays()} Days</h3>
+          </div>
+        </div><br></br>
+        <div className="salarydisplay">
+          <div>
+          <h3>Expected salary</h3><h3 className="amountdisplay">Rs {getsalary()}</h3>
+          </div>
+          <div>
+          <h3>OT hours salary</h3><h3 className="otsalarydisplay">Rs {otsalary()}</h3>
+          </div>
+        </div>
         <footer className="clfooter">
         <h2>COPYRIGHT &copy; 2023</h2>
       </footer>
