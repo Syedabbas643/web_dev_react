@@ -1,94 +1,133 @@
-.login-container {
-    max-width: 400px;
-    margin: 0 auto;
+.rooter{
+  min-height: 100vh;
+  background-image: url("wp.jpg"); /* Adjust the path to your image */
+  background-size: cover; /* Adjust the background size as needed */
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: black;
+}
+
+.login {
+    width: 70%;
+    margin: auto;
+    margin-top: 10%;
     padding: 20px;
-    background-color: #f7f7f7;
-    border-radius: 5px;
+    background-color: #1d1d1db7;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+.signup {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+    background-color: #1d1d1dde;
+    border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
   
-  .login h1 {
+.login h1 {
     text-align: center;
-    color: #333;
+    color: #979797;
     margin-bottom: 20px;
   }
   
-  form {
+form {
     display: flex;
     flex-direction: column;
   }
   
-  input[type="tel"],
-  input[type="text"] {
+input[type="tel"],
+input[type="text"] {
     padding: 10px;
     margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
+    border: 1px solid #00000018;
+    border-radius: 10px;
+    background-color: #ffffff41;
+    color: #fff;
   }
   
-  input[type="submit"] {
-    background-color: #007bff;
-    color: #fff;
+input[type="text"]::placeholder,
+input[type="tel"]::placeholder{
+    color: #c2c1c1; /* Change the color to your desired color */
+  }
+  
+input[type="submit"] {
+    background-color: #62f854;
+    color: #000000;
     border: none;
-    border-radius: 3px;
+    border-radius: 20px;
     padding: 10px;
     cursor: pointer;
   }
   
-  input[type="submit"]:hover {
+input[type="submit"]:hover {
     background-color: #0056b3;
   }
   
-  p {
+p {
     text-align: center;
-    color: #555;
+    color: #ffffff;
     margin: 20px 0;
   }
-  
-  .signup {
-    margin-top: 20px;
-    text-align: center;
-  }
 
-  .signup h1 {
+.signup h1 {
     text-align: center;
-    color: #333;
+    color: #979797;
     margin-bottom: 20px;
   }
 
-  .header {
-    background-color: #007bff;
+.header {
+    background-color: #0000007e;
     color: #fff;
     padding: 10px 0;
     text-align: center;
   }
   
-  .header-content {
+.header-content {
     max-width: 960px;
     margin: 0 auto;
   }
   
-  .header h1 {
+.header h1 {
     margin: 0;
     font-size: 24px;
   }
   
   /* Footer styles */
-  .footer {
+.footer {
     background-color: #333;
     color: #fff;
     padding: 10px 0;
     text-align: center;
   }
   
-  .footer-content {
+.footer-content {
     max-width: 960px;
     margin: 0 auto;
   }
-  
-  @media (max-width: 600px) {
-    .login {
-      max-width: 100%;
-      border-radius: 0;
+
+.checkboxes {
+    color: #333;
+    font-size: 16px;
+    margin-bottom: 5%;
+    color: #c5c5c5;
+  }
+
+.checkboxes label {
+    margin-right: 15px;
+    cursor: pointer;
+  }
+
+@media screen and (min-width: 768px) {
+    .login-container {
+      background-image: none; /* Remove the background image */
+      background-color: #000000; /* Change the background color to black */
+    }
+    .header {
+      background-color: #000000;
     }
   }
+
+
+  

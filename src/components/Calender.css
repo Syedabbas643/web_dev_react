@@ -3,18 +3,17 @@
     font-size: 26px;
     text-align: center;
     color: #fff;
-    border: solid;
-    border-color: #000000;
     cursor: pointer;
-    padding-top: 30px;
-    padding-bottom: 30px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     
   }
-.clheader{
+header{
     text-align: center;
-    font-size: 30px;
+    font-size: 25px;
     font-weight: bold;
-    padding-top: 5%;
+    padding-top: 3%;
+    color: #fff;
   }
 
 .popup {
@@ -32,7 +31,7 @@
 
 /* Styling for the popup content */
 .popup-content {
-  background-color: #fff;
+  background-color: #313131;
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -42,9 +41,10 @@
 /* Styling for the popup header */
 .popup-content h3 {
   margin: 0 0 10px;
+  margin-bottom: 5px;
   font-size: 20px;
   font-weight: bold;
-  color: #333;
+  color: #ffffff;
 }
 
 /* Styling for the input field in the popup */
@@ -52,29 +52,33 @@
   width: 100%;
   padding: 8px;
   margin-bottom: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #0000002c;
   border-radius: 5px;
+  background-color: #ffffff41;
 }
 
-/* Styling for the checkbox in the popup */
-.popup-content label {
+.popcheckboxes{
   display: flex;
-  align-items: center;
-  margin-bottom: 10px;
+  gap: 15%;
+  margin-top: 4%;
+  margin-bottom: 4%;
+  justify-content: center;
 }
 
-.popup-content input[type="checkbox"] {
-  margin-right: 8px;
+.popcheckboxes label{
+  color: #fff;
+  
 }
 
 /* Styling for the buttons in the popup */
 .popup-content button {
-  padding: 8px 16px;
-  margin-right: 10px;
+  padding: 4%;
+  margin: auto;
+  margin-left: 15%;
   border: none;
-  border-radius: 5px;
-  background-color: #007bff;
-  color: #fff;
+  border-radius: 10px;
+  background-color: #41f03b;
+  color: #0e0e0e;
   cursor: pointer;
 }
 
@@ -87,12 +91,12 @@
     display: grid;
     place-content: center;
     padding-top: 3%;
-  
+    color: #fff;
   }
 .calendar {
   font-family: Arial, sans-serif;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  background-color: #464646;
+  background-color: #000000;
   width: 100%;
   position: relative;
   z-index: 1;
@@ -106,21 +110,22 @@
 .table {
   width: 100%;
   margin-top: 5%;
-  margin-bottom: 10%;
+  margin-bottom: 5%;
 
 }
 .weekday {
   text-align: center;
   font-weight: bold;
   padding: 2%;
-  background-color: #313131;
+  background-color: #202020;
+  color: #fff;
 }
 
 .headercl {
   display: flex;
   justify-content: space-between; /* Distribute items evenly horizontally */
   align-items: center; /* Center items vertically */
-  background-color: #313131; /* Background color for the header */
+  background-color: #1a1a1a; /* Background color for the header */
   color: #fff; /* Text color */
   padding: 10px; /* Add some padding */
   border-radius: 5px; /* Add rounded corners */
@@ -130,6 +135,7 @@
 .month-name {
   font-size: 150%;
   font-weight: bold;
+  color: #fff;
 }
 
 .month-selector {
@@ -137,9 +143,9 @@
   padding: 5px;
   border: none; /* Remove border to keep it clean */
   border-radius: 3px;
-  background-color: #fff;
+  background-color: #303030;
   font-size: 16px;
-  color: #333;
+  color: #000000;
 }
 
 /* Style the custom arrow as mentioned in the previous answer */
@@ -160,50 +166,80 @@
 
 /* Styling for days in the current month */
 .current-month {
-  background-color: #494949;
+  background-color: #000000;
 }
 
 /* Styling for days in other months */
 .other-month {
   opacity: 30%;
+  background-color: #000000;
 }
 
 .day.highlighted {
-  background-color: #283a28;
+  background-color: #2e922e;
+  clip-path: circle(35% at 50% 50%);
 }
 
 .day-number.highlightedleave{
   color: red;
 }
 
-.detailsdisplay{
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 columns of equal width */
+  grid-template-rows: repeat(3, 1fr); /* 3 rows of equal height */
+  gap: 20px; /* Spacing between grid items */
+  justify-content: center; /* Center the columns horizontally */
+  align-content: space-between;
+  margin: 5%;
+}
+
+.ddisplay,
+.lvdisplay,
+.totalsalarydisplay,
+.sdisplay,
+.pdisplay {
+  background-color: #1d1d1d;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(245, 244, 244, 0.1);
   display: flex;
-  text-align: center;
-  gap: 15%;
+  flex-direction: column;
+  align-items: center;
+}
+
+.totalsalarydisplay {
+  grid-column: span 2;
   justify-content: center;
+  align-items: center;
 }
 
-.hoursdisplay{
-  color: greenyellow;
+h3 {
+  font-size: 1rem;
+  margin: 0;
+  color: #ffffff;
 }
 
-.leavedisplay{
+.hoursdisplay,
+.otsalarydisplay{
+  font-size: 1rem; 
+  padding-top: 2%;
+  font-weight: bold;
+  color: yellowgreen;
+}
+
+.leavedisplay,
+.pfdisplay{
+  font-size: 1rem; 
+  font-weight: bold;
+  padding-top: 2%;
   color: red;
-}
-
-.salarydisplay{
-  margin-top: 5%;
-  display: flex;
-  text-align: center;
-  gap: 15%;
-  justify-content: center;
 }
 
 .amountdisplay{
-  color: greenyellow;
-}
-
-.otsalarydisplay{
-  color: red;
+  font-size: 1rem; 
+  font-weight: bold;
+  padding-top: 2%;
+  color: gold;
 }
 

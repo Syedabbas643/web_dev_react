@@ -10,6 +10,7 @@ const Login = () => {
     const [codel,setcodel]=useState('')
     const [name,setname]=useState('')
     const [salary,setsalary] = useState(0);
+    const [pfchecked, setpfchecked] = useState(1);
     
 
     async function submit(e){
@@ -18,6 +19,7 @@ const Login = () => {
             alert('Please fill in all the required fields.');
             return;
           }
+        
 
         try{
 
@@ -58,7 +60,7 @@ const Login = () => {
         try{
 
             await axios.post("/signup123",{
-                tel,codel,name,salary
+                tel,codel,name,salary,pfchecked
             })
             .then(res=>{
                 if(res.data==="exist"){
@@ -81,6 +83,10 @@ const Login = () => {
 
     }
 
+    const handleOptionChange = (option) => {
+        setpfchecked(option);
+      };
+
 
     return (
 
@@ -90,7 +96,7 @@ const Login = () => {
 
         <header className="header">
             <div className="header-content">
-          <h1>GaMeR</h1>
+          <h1>&lt; GaMeR /&gt;</h1>
             </div>
         </header>
 
@@ -103,15 +109,13 @@ const Login = () => {
                           e.preventDefault();
                       }
                   }} placeholder="Enter Your Code here"  />
-                <input type="submit" onClick={submit} />
+                <input value="Login" type="submit" onClick={submit} />
 
             </form>
+            </div>
 
-            <br />
-            <p>OR</p>
-            <br />
-             </div>
-
+            <p>Don't have an account, Sign up below</p>
+            
             <div className="signup">
             <h1>Signup</h1>
             <form action="POST">
@@ -161,15 +165,30 @@ const Login = () => {
                     required
                 />
                 <br></br>
-                <input type="submit" onClick={submitl} />
+                <div className="checkboxes">
+                    <label>Is PF is applicable :&gt;</label>
+                    <label>
+                        <input
+                        type="checkbox"
+                        checked={pfchecked === 1}
+                        onChange={() => handleOptionChange(1)}
+                        />
+                        Yes
+                    </label>
+                    <label>
+                        <input
+                        type="checkbox"
+                        checked={pfchecked === 0}
+                        onChange={() => handleOptionChange(0)}
+                        />
+                        No
+                    </label>
+                </div>
+                <input value="Sign up" type="submit" onClick={submitl} />
             </form>
             </div>
         </main>
-        <footer className="footer">
-            <div className="footer-content">
-            <p>&copy; 2023 GaMeR</p>
-            </div>
-      </footer>
+        
 
         </div>
     

@@ -27,6 +27,7 @@ const Calendar = () => {
     const [leave,setleave] = useState(null);
     const [loading, setLoading] = useState(true);
     const [salary,setsalary] = useState(null);
+    const [pf,setpf] = useState(null);
     const location = useLocation()
     const code = location.state.id;
   
@@ -64,6 +65,7 @@ const Calendar = () => {
               setitems(tempjson.dates)
               setleave(tempjson.leave)
               setsalary(parseInt(tempjson.salary,10))
+              setpf(tempjson.pf)
               console.log(tempjson)
               
             }
@@ -261,6 +263,26 @@ const Calendar = () => {
         return Math.ceil(otsalary)
       }
 
+      const getdeductsalary = () =>{
+        let days = format(monthEnd, "dd")
+        let amount = 0
+        if (pf){
+            let commonpf = salary>= 15000 ? 1800 : salary*0.12
+            let onedaypf = commonpf / days
+            let attendance = days - gettotalleavedays()
+            let pfamount = (onedaypf * attendance) + 6
+
+            let total = salary + otsalary()
+            let esi = total*0.0075
+            amount = pfamount + esi
+        }else{
+          let total = salary + otsalary()
+            let esi = total*0.0075
+            amount = esi
+        }
+        return Math.ceil(amount)
+      }
+
       const getsalary = () =>{
         let totalHours = 0
         leave.forEach((item) =>{
@@ -273,7 +295,7 @@ const Calendar = () => {
         let days = format(monthEnd, "dd")
         let onehoursalary = salary / days / 8;
         let debitsalary = totalHours * onehoursalary
-        let totalsalary = salary + otsalary() - debitsalary
+        let totalsalary = salary + otsalary() - debitsalary - getdeductsalary()
         return Math.ceil(totalsalary)
       }
 
@@ -338,24 +360,30 @@ const Calendar = () => {
           </thead>
           <tbody>{renderCalendar()}</tbody>
         </table>
-        <div className="detailsdisplay">
-          <div>
-          <h3>Total OT hours</h3><h3 className="hoursdisplay">{getTotalWorkedHoursForCurrentMonth()} Hours</h3>
+        <div className="grid-container">
+            <div className="ddisplay">
+                <h3>Total OT hours</h3>
+                <h3 className="hoursdisplay">{getTotalWorkedHoursForCurrentMonth()} Hours</h3>
+              </div>
+              <div className="lvdisplay">
+                <h3>Total Leave days</h3>
+                <h3 className="leavedisplay">{gettotalleavedays()} Days</h3>
+              </div>
+              <div className="sdisplay">
+                <h3>OT hours salary</h3>
+                <h3 className="otsalarydisplay">Rs {otsalary()}</h3>
+              </div>
+              <div className="pdisplay">
+                <h3>PF and ESI</h3>
+                <h3 className="pfdisplay">Rs {getdeductsalary()}</h3>
+              </div>
+            <div className="totalsalarydisplay">
+                <h3>Expected salary</h3>
+                <h3 className="amountdisplay">Rs {getsalary()}</h3>
+            </div>
           </div>
-          <div>
-          <h3>Total Leave days</h3><h3 className="leavedisplay">{gettotalleavedays()} Days</h3>
-          </div>
-        </div><br></br>
-        <div className="salarydisplay">
-          <div>
-          <h3>Expected salary</h3><h3 className="amountdisplay">Rs {getsalary()}</h3>
-          </div>
-          <div>
-          <h3>OT hours salary</h3><h3 className="otsalarydisplay">Rs {otsalary()}</h3>
-          </div>
-        </div>
         <footer className="clfooter">
-        <h2>COPYRIGHT &copy; 2023</h2>
+        <h2>GaMeR &copy; 2023</h2>
       </footer>
       </div>
     );

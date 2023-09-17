@@ -28,23 +28,24 @@ const Popup = ({ date, onClose, onSubmit }) => {
                           e.preventDefault();
                       }
                   }} onChange={handleChange} />
-          <div className="checkboxes">
-          <label>
+          <div className="popcheckboxes">
+            <div>
             <input
               type="checkbox"
               checked={checkedOption === "OT"}
               onChange={() => handleOptionChange("OT")}
             />
+            <label>
             OT
-          </label>
-          <label>
-            <input
+          </label></div>
+            <div><input
               type="checkbox"
               checked={checkedOption === "Leave"}
               onChange={() => handleOptionChange("Leave")}
             />
+            <label>
             Leave
-          </label>
+          </label></div>
         </div>
         <button onClick={handleSubmit}>Submit</button>
         <button onClick={onClose}>Cancel</button>
