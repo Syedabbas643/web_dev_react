@@ -80,18 +80,13 @@ const Login = () => {
             console.log(e);
 
         }
-
     }
-
     const handleOptionChange = (option) => {
         setpfchecked(option);
       };
 
 
     return (
-
-        
-
         <div className="rooter">
 
         <header className="header">
@@ -188,11 +183,7 @@ const Login = () => {
             </form>
             </div>
         </main>
-        
-
-        </div>
-    
-          
+        </div>  
         
     )
 }

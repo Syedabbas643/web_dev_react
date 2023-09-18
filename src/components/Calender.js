@@ -1,27 +1,16 @@
 import React,{ useState,useEffect } from "react";
-import { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, isSameMonth, isSameDay, setMonth, parseISO } from "date-fns";
+import { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, isSameMonth, isSameDay, setMonth } from "date-fns";
 import Popup from "./Popup";
 import axios from "axios"
 import "./Calender.css"
 import { useLocation} from "react-router-dom"
-const months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
+const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
 const Calendar = () => {
     const [showPopup, setShowPopup] = useState(false);
     const [selectedDate, setSelectedDate] = useState(null);
+    const [selecteddateot,setselecteddateot] = useState("0");
+    const [selecteddateleave,setselecteddateleave] = useState("0");
     const [userdata, setUserdata] = useState(null);
     const [items,setitems] = useState(null);
     const [leave,setleave] = useState(null);
@@ -87,6 +76,16 @@ const Calendar = () => {
       const isDateInleaveArray = (dateToCheck) => {
         return leave.some((item) => isSameDay(new Date(item.date), dateToCheck));
       };
+
+      const findValueot = (dateToCheck) => {
+        const itemWithDate = items.find((item) => isSameDay(new Date(item.date), dateToCheck));
+        return itemWithDate ? itemWithDate.Hours : "0"; 
+      };
+
+      const findValueleave = (dateToCheck) => {
+        const itemWithDate = leave.find((item) => isSameDay(new Date(item.date), dateToCheck));
+        return itemWithDate ? itemWithDate.Hours : "0"; 
+      };
       
       const renderDay = (day) => {
         const isCurrentMonth = isSameMonth(day, monthStart);
@@ -96,6 +95,8 @@ const Calendar = () => {
       
         const handleDayClick = () => {
           setSelectedDate(day);
+          setselecteddateot(findValueot(day))
+          setselecteddateleave(findValueleave(day))
           setShowPopup(true);
         };
       
@@ -121,7 +122,6 @@ const Calendar = () => {
       const selectedMonthIndex = event.target.value;
       const newSelectedMonth = setMonth(selectedMonth, selectedMonthIndex);
       setSelectedMonth(newSelectedMonth);
-      //console.log(monthname)
     };
   
     const handlePopupSubmit = async (date, inputValue, option) => {
@@ -222,9 +222,6 @@ const Calendar = () => {
         }
         };
 
-
-        
-
     const getTotalWorkedHoursForCurrentMonth = () => {
         let totalHours = 0;
         items.forEach((item) => {
@@ -241,7 +238,7 @@ const Calendar = () => {
         return totalHours;
       };
 
-      const gettotalleavedays = () =>{
+    const gettotalleavedays = () =>{
           let totalHours = 0
           let totaldays = 0
           leave.forEach((item) =>{
@@ -255,7 +252,7 @@ const Calendar = () => {
           return totaldays
       };
 
-      const otsalary = () =>{
+    const otsalary = () =>{
         let days = format(monthEnd, "dd")
         let onehoursalary = salary / days / 8;
         let totalothours = (parseInt(getTotalWorkedHoursForCurrentMonth(),10) / 2) + parseInt(getTotalWorkedHoursForCurrentMonth(),10)
@@ -263,7 +260,7 @@ const Calendar = () => {
         return Math.ceil(otsalary)
       }
 
-      const getdeductsalary = () =>{
+    const getdeductsalary = () =>{
         let days = format(monthEnd, "dd")
         let amount = 0
         if (pf){
@@ -283,7 +280,7 @@ const Calendar = () => {
         return Math.ceil(amount)
       }
 
-      const getsalary = () =>{
+    const getsalary = () =>{
         let totalHours = 0
         leave.forEach((item) =>{
           const itemleave = new Date(item.date);
@@ -299,8 +296,6 @@ const Calendar = () => {
         return Math.ceil(totalsalary)
       }
 
-
-  
     const renderWeek = (startDay) => {
       const week = [];
       for (let i = 0; i < 7; i++) {
@@ -329,7 +324,7 @@ const Calendar = () => {
       <div className="calendar">
             <header className="clheader">Welcome Back, &gt; {userdata.Name.toUpperCase()} &lt;</header>
         {showPopup && (
-          <Popup date={format(selectedDate, dateFormat)} onClose={handleClosePopup} onSubmit={handlePopupSubmit} />
+          <Popup date={format(selectedDate, dateFormat)} ot ={selecteddateot} lea={selecteddateleave} onClose={handleClosePopup} onSubmit={handlePopupSubmit} />
         )}
         <div className="headercl">
           <div>

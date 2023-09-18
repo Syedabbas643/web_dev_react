@@ -1,4 +1,4 @@
-import React,{ useState }from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
@@ -7,7 +7,6 @@ import Calendar from './components/Calender';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 const MainApp = () => {
-  const [currentDate] = useState(new Date());
 
   return (
     <Router>

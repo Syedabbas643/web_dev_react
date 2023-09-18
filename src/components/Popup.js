@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
-const Popup = ({ date, onClose, onSubmit }) => {
+const Popup = ({ date, ot, lea, onClose, onSubmit }) => {
   const [inputValue, setInputValue] = useState("");
   const [checkedOption, setCheckedOption] = useState(null);
-
+  
   const handleChange = (e) => {
     setInputValue(e.target.value); // Allow only numbers in the input
   };
@@ -36,7 +36,7 @@ const Popup = ({ date, onClose, onSubmit }) => {
               onChange={() => handleOptionChange("OT")}
             />
             <label>
-            OT
+            OT &lt; {ot} &gt;
           </label></div>
             <div><input
               type="checkbox"
@@ -44,7 +44,7 @@ const Popup = ({ date, onClose, onSubmit }) => {
               onChange={() => handleOptionChange("Leave")}
             />
             <label>
-            Leave
+            Leave &lt; {lea} &gt;
           </label></div>
         </div>
         <button onClick={handleSubmit}>Submit</button>
