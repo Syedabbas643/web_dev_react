@@ -3,6 +3,7 @@ import { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, isSa
 import Popup from "./Popup";
 import axios from "axios"
 import "./Calender.css"
+import logo from "../logo.svg"
 import { useLocation} from "react-router-dom"
 const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
@@ -317,7 +318,12 @@ const Calendar = () => {
       return rows;
     };
     if (loading) {
-        return <div><h1>Loading...</h1></div>;
+        return <div className="App-header">
+                  <img src={logo} className="App-logo" alt="logo" />
+                <p>
+                  Loading...
+                </p>
+            </div>;
       }
   
     return (
